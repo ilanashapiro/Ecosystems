@@ -34,7 +34,7 @@ class LabelSquare(Label):
         super(LabelSquare, self).__init__(**kwargs)
         with self.canvas:
             Color(0, green, 0, 1)
-            Rectangle(pos=(self.getWindowWidth() / (row + 1), self.getWindowHeight() / (col + 1)), size=(self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid, self.getWindowHeight() / (EcosystemsUI().numRowsColsInJungleGrid)))
+            Rectangle(pos=(row * (self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid), col * (self.getWindowHeight() / EcosystemsUI().numRowsColsInJungleGrid)), size=(10, 10)) #EcosystemsUI().numRowsColsInJungleGrid, self.getWindowHeight() / (EcosystemsUI().numRowsColsInJungleGrid)))
             print(str(row) + " " + str(col))
     def getWindowWidth(self):
         return Window.width
@@ -147,11 +147,11 @@ class DeforestationScene(Screen):
 
 
 
-    box = ObjectProperty(None)
-    grid = ObjectProperty(None)
+        box = ObjectProperty(None)
+        grid = ObjectProperty(None)
 
 
-    def on_grid(self, *args):
+    #def on_float(self, *args):
         green = 1
         for i in range(EcosystemsUI().numTreesInJungle):
             currentRow = (i + EcosystemsUI().numRowsColsInJungleGrid) // EcosystemsUI().numRowsColsInJungleGrid
@@ -159,7 +159,7 @@ class DeforestationScene(Screen):
             if(currentCol == 0):
                 currentCol = 5
             green = -1 * green
-            self.grid.add_widget(LabelSquare(currentRow, currentCol, green))
+            self.float.add_widget(LabelSquare(currentRow, currentCol, green))
             #self.grid.add_widget(Button(text=str(i)))
             print(currentRow)
             print(currentCol)
@@ -334,26 +334,29 @@ Builder.load_string("""
 
 <DeforestationScene>:
     name: 'deforestation'
-    box: box
-    grid: grid
-    BoxLayout:
-        id: box
-        orientation: "horizontal"
-        pos_hint: {"x": 0, "y": 0}
-        GridLayout:
-            id: grid
-            #rows: 4
-            cols: app.numRowsColsInJungleGrid
-            padding: 10
-            spacing: 10
-            row_force_default: True
-            row_default_height: 40
-            # Label:
-            #     text: 'Deforestation'
-            #     color: 0, 0, 0, 1
-            #     size_hint_x: None
-            #     width: 200
-            #     font_size: 24
+    #box: box
+    #grid: grid
+    float:float
+    FloatLayout:
+        id: float
+        # BoxLayout:
+        #     id: box
+        #     orientation: "horizontal"
+        #     pos_hint: {"x": 0, "y": 0}
+        #     GridLayout:
+        #         id: grid
+        #         #rows: 4
+        #         cols: app.numRowsColsInJungleGrid
+        #         padding: 10
+        #         spacing: 10
+        #         row_force_default: True
+        #         row_default_height: 40
+        #         # Label:
+        #         #     text: 'Deforestation'
+        #         #     color: 0, 0, 0, 1
+        #         #     size_hint_x: None
+        #         #     width: 200
+        #         #     font_size: 24
 
 
     # grid: root.grid
