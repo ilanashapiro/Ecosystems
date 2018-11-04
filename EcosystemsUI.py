@@ -26,15 +26,16 @@ import sys
 sm = ScreenManager()
 Window.clearcolor = (.95, .95, .95, 1) #background white
 
+currentCol = 0
+currentRow = 0
 
-
-
-class LabelSquare(Button):
-    def __init__(self, **kwargs):
+class LabelSquare(Label):
+    def __init__(self, row, col, green, **kwargs):
         super(LabelSquare, self).__init__(**kwargs)
         with self.canvas:
-            Color(0, 1, 0, 1)
-            Rectangle(pos=(self.getWindowWidth() / 2, self.getWindowHeight() / 2), size=(self.getWindowWidth() / (EcosystemsUI().numRowsColsInJungleGrid * (EcosystemsUI().currentRow + 1)), self.getWindowHeight() / (EcosystemsUI().numRowsColsInJungleGrid *  (EcosystemsUI().currentCol + 1))))
+            Color(0, green, 0, 1)
+            Rectangle(pos=(self.getWindowWidth() / (row + 1), self.getWindowHeight() / (col + 1)), size=(self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid, self.getWindowHeight() / (EcosystemsUI().numRowsColsInJungleGrid)))
+            print(str(row) + " " + str(col))
     def getWindowWidth(self):
         return Window.width
 
@@ -142,7 +143,6 @@ class DeforestationScene(Screen):
         DeforestationScene.audioFile = SoundLoader.load(pathToSong)
         self.pathSize = os.path.getsize(self.pathToSong)
 
-
         super(Screen, self).__init__()
 
 
@@ -150,13 +150,21 @@ class DeforestationScene(Screen):
     box = ObjectProperty(None)
     grid = ObjectProperty(None)
 
+
     def on_grid(self, *args):
+        green = 1
         for i in range(EcosystemsUI().numTreesInJungle):
-            self.grid.add_widget(LabelSquare())
-            EcosystemsUI().currentRow = i
-            EcosystemsUI().currentRow = (i  / EcosystemsUI().numRowsColsInJungleGrid) % EcosystemsUI().numRowsColsInJungleGrid
+            currentRow = (i + EcosystemsUI().numRowsColsInJungleGrid) // EcosystemsUI().numRowsColsInJungleGrid
+            currentCol = (i + 1) % EcosystemsUI().numRowsColsInJungleGrid
+            if(currentCol == 0):
+                currentCol = 5
+            green = -1 * green
+            self.grid.add_widget(LabelSquare(currentRow, currentCol, green))
             #self.grid.add_widget(Button(text=str(i)))
+            print(currentRow)
+            print(currentCol)
             print(i)
+            print("")
 
 
 
@@ -194,6 +202,9 @@ class DeforestationScene(Screen):
 
     def quitUI(self):
         quit()
+
+
+
 
 
 
@@ -371,8 +382,6 @@ Builder.load_string("""
 class EcosystemsUI(App):
     numTreesInJungle = 5*5
     numRowsColsInJungleGrid = 5
-    currentRow = 0
-    currentCol = 0
     def build(self):
         return sm
 
