@@ -34,7 +34,7 @@ class LabelSquare(Label):
         super(LabelSquare, self).__init__(**kwargs)
         with self.canvas:
             Color(0, green, 0, 1)
-            Rectangle(pos=(row * (self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid), col * (self.getWindowHeight() / EcosystemsUI().numRowsColsInJungleGrid)), size=(10, 10)) #EcosystemsUI().numRowsColsInJungleGrid, self.getWindowHeight() / (EcosystemsUI().numRowsColsInJungleGrid)))
+            Rectangle(pos=((row - 1) * (self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid), (col - 1) * (self.getWindowHeight() / EcosystemsUI().numRowsColsInJungleGrid)), size=(self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid, self.getWindowHeight() / (EcosystemsUI().numRowsColsInJungleGrid)))
             print(str(row) + " " + str(col))
     def getWindowWidth(self):
         return Window.width
