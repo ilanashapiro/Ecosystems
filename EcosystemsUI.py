@@ -34,7 +34,7 @@ class LabelSquare(Label):
         super(LabelSquare, self).__init__(**kwargs)
         with self.canvas:
             Color(0, green, 0, 1)
-            Rectangle(pos=((row - 1) * (self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid), (col - 1) * (self.getWindowHeight() / EcosystemsUI().numRowsColsInJungleGrid)), size=(self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid, self.getWindowHeight() / (EcosystemsUI().numRowsColsInJungleGrid)))
+            Rectangle(pos=((row - 1) * (self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid), (col - 1) * (self.getWindowHeight() / EcosystemsUI().numRowsColsInJungleGrid)), size= (self.getWindowWidth() / EcosystemsUI().numRowsColsInJungleGrid, self.getWindowHeight() / (EcosystemsUI().numRowsColsInJungleGrid)))
             print(str(row) + " " + str(col))
     def getWindowWidth(self):
         return Window.width
@@ -122,7 +122,7 @@ class AmazonScene(Screen):
 
     def toDeforestation(self, *args):
         sm.current = "deforestation"
-        sm.on_enter = DeforestationScene.startAnim()
+        sm.on_enter = DeforestationScene.startSoundThread()
         print("started anim and song")
 
 
@@ -157,8 +157,8 @@ class DeforestationScene(Screen):
             currentRow = (i + EcosystemsUI().numRowsColsInJungleGrid) // EcosystemsUI().numRowsColsInJungleGrid
             currentCol = (i + 1) % EcosystemsUI().numRowsColsInJungleGrid
             if(currentCol == 0):
-                currentCol = 5
-            green = -1 * green
+                currentCol = EcosystemsUI().numRowsColsInJungleGrid
+            #green = -1 * green
             self.float.add_widget(LabelSquare(currentRow, currentCol, green))
             #self.grid.add_widget(Button(text=str(i)))
             print(currentRow)
@@ -190,10 +190,15 @@ class DeforestationScene(Screen):
         DeforestationScene.audioFile.play()
 
     @staticmethod
-    def startAnim(*args):
+    def startSoundThread(*args):
         print("deforested")
         t = threading.Timer(0, DeforestationScene.playSound)
         t.start()
+
+    def startAnim(self):
+        pass
+        #year 1
+
 
     def stopSong(self):
         if(self.audioFile.state == 'play'):
@@ -383,8 +388,8 @@ Builder.load_string("""
 
 '''build the UI'''
 class EcosystemsUI(App):
-    numTreesInJungle = 5*5
-    numRowsColsInJungleGrid = 5
+    numRowsColsInJungleGrid = 6
+    numTreesInJungle = numRowsColsInJungleGrid * numRowsColsInJungleGrid
     def build(self):
         return sm
 
